@@ -1,0 +1,303 @@
+import 'package:_36inaday/wall.dart';
+import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class utube extends StatefulWidget {
+  final String email;
+  final String name;
+  utube({required this.name, required this.email, super.key});
+
+  @override
+  State<utube> createState() => _utubeState();
+}
+
+class _utubeState extends State<utube> {
+  void cv() {
+    if (list.isEmpty) {
+      setState(() {
+        cvis = false;
+      });
+    } else {
+      setState(() {
+        cvis = true;
+      });
+    }
+  }
+
+  void initState() {
+    super.initState();
+    loa();
+    cv();
+  }
+
+  Future<void> loa() async {
+    final pr = await SharedPreferences.getInstance();
+    setState(() {
+      list = pr.getStringList('myl') ?? [];
+    });
+    cv();
+  }
+
+  Future<void> sav(List<String> list) async {
+    final pr = await SharedPreferences.getInstance();
+    pr.setStringList('myl', list);
+    loa();
+    print("saved");
+  }
+
+  Color cb = Colors.white;
+  Color c1 = Colors.black;
+  Color c2 = Colors.brown;
+  Color c3 = Colors.red;
+
+  final TextEditingController _controller = TextEditingController();
+  List<String> list = [];
+  var err = '';
+  bool invis = false;
+  bool viser = false;
+  bool lvis = true;
+  bool cvis = true;
+  var ti = Icons.circle_outlined;
+
+  void nav2() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => wall()));
+  }
+
+  del() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('Name');
+    prefs.remove('Email');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10, top: 0, left: 0, right: 0),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(30, 20, 30, 0),
+
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      'https://picsum.photos/seed/picsum/200/300',
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              // Text(
+              //   textAlign: TextAlign.center,
+              //   'Welcome back ${widget.name} \n let\'s plan your day',
+              //   style: TextStyle(
+              //     fontFamily: 'Lexend',
+              //     fontSize: 22,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'Hello ${widget.name}',
+                    speed: Duration(milliseconds: 200),
+                    textStyle: TextStyle(
+                      fontSize: 34,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Lexend',
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                  ColorizeAnimatedText(
+                    'To-dos  ',
+                    colors: [
+                      Colors.black,
+                      Colors.deepPurple,
+                      Colors.deepOrange,
+                      Colors.redAccent,
+                    ],
+                    textStyle: TextStyle(
+                      // color: Colors.black,
+                      fontSize: 29,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Lexend',
+                    ),
+                  ),
+                ],
+                totalRepeatCount: 1,
+                pause: Duration(milliseconds: 500),
+              ),
+              // ass.map((cheeks) {
+              //   return Text(
+              //     cheeks,
+              //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
+              //   );
+              // }).toList(),
+              Visibility(
+                visible: invis,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                    Flexible(
+                      flex: 2,
+                      child: TextField(
+                        onSubmitted: (value) {
+                          setState(() {
+                            viser = false;
+
+                            if (list.contains(_controller.text)) {
+                              viser = true;
+                              err = 'ufcked upp bro thats already there..';
+                            } else {
+                              list.add(_controller.text);
+                              _controller.clear();
+                              sav(list);
+                              cv();
+                            }
+                          });
+                        },
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          labelText: 'Add a new task',
+                        ),
+                      ),
+                    ),
+                    FittedBox(
+                      child: ElevatedButton(
+                        child: Icon(Icons.menu),
+                        onPressed: () {
+                          setState(() {
+                            viser = false;
+
+                            if (list.contains(_controller.text)) {
+                              viser = true;
+                              err = 'ufcked upp bro thats already there..';
+                            } else if (_controller.text.trim() == '') {
+                              viser = true;
+                              err =
+                                  'Emi ra baala raaju??...\n waste ra reyy, \n yakk thu ';
+                            }
+                            if (list.contains(_controller.text)) {
+                              viser = true;
+                              err = 'ufcked upp bro thats already there..';
+                            } else {
+                              list.add(_controller.text);
+                              _controller.clear();
+                              sav(list);
+                              cv();
+                            }
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+
+              Visibility(
+                visible: viser,
+                child: Text(err, style: TextStyle(color: c3)),
+              ),
+
+              Visibility(
+                visible: cvis,
+                child: Container(
+                  margin: EdgeInsets.only(top: 6, bottom: 10),
+                  padding: EdgeInsets.all(13),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(30),
+                    color: Colors.white,
+                    border: Border.all(
+                      color: const Color.fromARGB(107, 243, 229, 245),
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      for (int i = 0; i < list.length; i++)
+                        Container(
+                          margin: EdgeInsets.only(bottom: 3),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+
+                                children: [
+                                  Text(
+                                    '${i + 1} . ${list[i]}',
+                                    style: TextStyle(
+                                      fontFamily: 'Lexend',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: Icon(ti, color: Colors.purple),
+                                    onPressed: () {
+                                      setState(() {
+                                        list.removeAt(i);
+                                        sav(list);
+                                        cv();
+                                      });
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 30),
+              Visibility(
+                visible: !cvis,
+                child: Column(
+                  children: [
+                    Center(
+                      child: ClipRRect(
+                        child: Image(image: AssetImage('images/image.png')),
+                      ),
+                    ),
+                    Text(
+                      textAlign: TextAlign.center,
+                      'No tasks for now, \nclicl "+" to add a new task',
+                      style: TextStyle(fontFamily: 'Lexend', fontSize: 16),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+            //ass,map((cheeks)=> Text(cheeks).toList()),
+          ),
+        ),
+
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed: () {
+            setState(() {
+              invis = true;
+            });
+          },
+        ),
+      ),
+    );
+  }
+}
