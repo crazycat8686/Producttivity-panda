@@ -1,0 +1,216 @@
+// import 'package:flutter/material.dart';
+
+// void main() {
+//   runApp(MaterialApp(debugShowCheckedModeBanner: true, home: dawgg()));
+// }
+
+// class dawgg extends StatefulWidget {
+//   const dawgg({super.key});
+
+//   @override
+//   State<dawgg> createState() => _dawggState();
+// }
+
+// class _dawggState extends State<dawgg> {
+//   int counter = 0;
+//   Color c1 = Colors.orange;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Genpanda', style: TextStyle(color: Colors.white)),
+//         centerTitle: true,
+//         backgroundColor: Colors.black,
+//         elevation: 0,
+//         toolbarHeight: 30,
+//       ),
+
+//       body: Container(
+//         color: c1,
+//         child: Padding(
+//           padding: EdgeInsets.fromLTRB(30, 30, 30, 0),
+//           child: Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Center(
+//                 child: CircleAvatar(
+//                   radius: 40,
+//                   backgroundImage: NetworkImage(
+//                     'https://images.unsplash.com/photo-1545987796-200677ee1011?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bmV0d29ya3xlbnwwfHwwfHx8MA%3D%3D',
+//                   ),
+//                 ),
+//               ),
+//               Divider(height: 60, color: Colors.deepOrange),
+//               SizedBox(height: 20),
+//               Text(
+//                 'Name',
+//                 style: TextStyle(
+//                   color: Colors.grey,
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               Text(
+//                 'Aravind Budaraju',
+//                 style: TextStyle(
+//                   color: Colors.deepOrange,
+//                   fontSize: 27,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               SizedBox(height: 10),
+//               Text(
+//                 'Age',
+//                 style: TextStyle(
+//                   color: Colors.grey,
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               Text(
+//                 '19',
+//                 style: TextStyle(
+//                   color: Colors.deepOrange,
+//                   fontSize: 27,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               SizedBox(height: 10),
+//               Text(
+//                 'Counter',
+//                 style: TextStyle(
+//                   color: Colors.grey,
+//                   fontSize: 16,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               Text(
+//                 '${counter}',
+//                 style: TextStyle(
+//                   color: Colors.deepOrange,
+//                   fontSize: 27,
+//                   fontWeight: FontWeight.bold,
+//                 ),
+//               ),
+//               SizedBox(height: 10),
+
+//               Row(
+//                 children: [
+//                   Icon(Icons.email_rounded, color: Colors.deepOrangeAccent),
+//                   SizedBox(width: 10),
+
+//                   Text(
+//                     'budarajuaravind@gmail.com',
+//                     style: TextStyle(color: Colors.grey, fontSize: 16),
+//                   ),
+//                 ],
+//               ),
+//               SizedBox(height: 10),
+//               SingleChildScrollView(
+//                 scrollDirection: Axis.horizontal,
+//                 child: Row(
+//                   children: [
+//                     ElevatedButton.icon(
+//                       icon: Icon(Icons.add),
+//                       onPressed: () {
+//                         setState(() {
+//                           counter += 1;
+//                         });
+//                         print(counter);
+//                       },
+//                       label: Text('Increase'),
+//                       style: ElevatedButton.styleFrom(
+//                         backgroundColor: Colors.transparent,
+//                         shadowColor: const Color.fromARGB(110, 104, 58, 183),
+//                       ),
+//                     ),
+//                     SizedBox(width: 3),
+
+//                     ElevatedButton.icon(
+//                       icon: Icon(Icons.add),
+//                       onPressed: () {
+//                         setState(() {
+//                           counter -= 1;
+//                         });
+//                         print(counter);
+//                       },
+//                       label: Text('Decrese'),
+//                       style: ElevatedButton.styleFrom(
+//                         backgroundColor: Colors.transparent,
+//                         shadowColor: const Color.fromARGB(110, 104, 58, 183),
+//                       ),
+//                     ),
+//                     SizedBox(width: 3),
+
+//                     ElevatedButton.icon(
+//                       icon: Icon(Icons.add),
+//                       onPressed: () {
+//                         setState(() {
+//                           counter = 0;
+//                         });
+//                         print(counter);
+//                       },
+//                       label: Text('reset'),
+//                       style: ElevatedButton.styleFrom(
+//                         backgroundColor: Colors.transparent,
+//                         shadowColor: const Color.fromARGB(110, 104, 58, 183),
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//               SizedBox(height: 20),
+//               Row(
+//                 children: [
+//                   ElevatedButton(
+//                     style: ElevatedButton.styleFrom(
+//                       iconSize: 100,
+//                       iconColor: Colors.transparent,
+//                     ),
+
+//                     onPressed: () {
+//                       setState(() {
+//                         c1 = Colors.black;
+//                       });
+//                     },
+//                     child: ClipRRect(
+//                       borderRadius: BorderRadius.circular(
+//                         20,
+//                       ), // 👈 adjust the roundness here
+//                       child: Image.network(
+//                         'https://static.toiimg.com/thumb/msid-120060276,imgsize-23894,width-400,resizemode-4/120060276.jpg',
+//                         fit: BoxFit.cover,
+//                         height: 100,
+//                         width: 100,
+//                       ),
+//                     ),
+//                   ),
+//                   ElevatedButton(
+//                     style: ElevatedButton.styleFrom(iconSize: 400),
+
+//                     onPressed: () {
+//                       setState(() {
+//                         c1 = Colors.white;
+//                       });
+//                     },
+//                     child: ClipRRect(
+//                       borderRadius: BorderRadius.circular(
+//                         20,
+//                       ), // 👈 adjust the roundness here
+//                       child: Image.network(
+//                         'https://preview.redd.it/ksi-if-he-was-white-kys-v0-4fx9vsvuv47b1.png?width=640&crop=smart&auto=webp&s=8968e73bb2524fc93d7ca2c2d5fb52b3ecebe0f0',
+//                         fit: BoxFit.cover,
+//                         height: 100,
+//                         width: 100,
+//                       ),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
