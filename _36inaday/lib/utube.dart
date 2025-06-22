@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:_36inaday/wall.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -34,14 +36,18 @@ class _utubeState extends State<utube> {
   Future<void> loa() async {
     final pr = await SharedPreferences.getInstance();
     setState(() {
-      list = pr.getStringList('myl') ?? [];
+      list = pr.getStringList('l') ?? [];
+      tlist = pr.getStringList('t') ?? [];
     });
     cv();
+    print('loaded');
   }
 
-  Future<void> sav(List<String> list) async {
+  Future<void> sav(List<String> list, List<String> tlist) async {
     final pr = await SharedPreferences.getInstance();
-    pr.setStringList('myl', list);
+    pr.setStringList('l', list);
+    pr.setStringList('t', tlist);
+
     loa();
     print("saved");
   }
@@ -60,7 +66,9 @@ class _utubeState extends State<utube> {
   bool cvis = true;
   bool schedulevis = false;
   var ti = Icons.circle_outlined;
-  TimeOfDay? sd = TimeOfDay.now();
+  // List<TimeOfDay?> sd = [];
+  List<String> tlist = [];
+  var count;
 
   void nav2() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => wall()));
@@ -68,8 +76,10 @@ class _utubeState extends State<utube> {
 
   del() async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.remove('Name');
-    prefs.remove('Email');
+    // prefs.remove('Name');
+    // prefs.remove('Email');
+    prefs.remove('l');
+    prefs.remove('t');
   }
 
   @override
@@ -179,8 +189,9 @@ class _utubeState extends State<utube> {
                                   err = 'ufcked upp bro thats already there..';
                                 } else {
                                   list.add(_controller.text);
+                                  tlist.add('');
                                   _controller.clear();
-                                  sav(list);
+                                  sav(list, tlist);
                                   cv();
                                 }
                               });
@@ -229,8 +240,9 @@ class _utubeState extends State<utube> {
                                         'Emi ra baala raaju??...\n waste ra reyy, \n yakk thu ';
                                   } else {
                                     list.add(_controller.text);
+                                    tlist.add('');
                                     _controller.clear();
-                                    sav(list);
+                                    sav(list, tlist);
                                     cv();
                                     invis = false;
                                   }
@@ -243,14 +255,45 @@ class _utubeState extends State<utube> {
                               label: Text('schedule'),
                               icon: Icon(Icons.access_time),
                               onPressed: () async {
+                                final DateTime? dt = await showDatePicker(
+                                  context: context,
+                                  firstDate: DateTime.now(),
+                                  lastDate: DateTime.now().add(
+                                    Duration(days: 365),
+                                  ),
+                                );
                                 final TimeOfDay? t = await showTimePicker(
                                   initialTime: TimeOfDay.now(),
                                   context: context,
                                 );
                                 setState(() {
-                                  if (t != '') {
-                                    sd = t;
-                                    TimeOfDay sd{i+1}= sd;             }
+                                  if (t != '' &&
+                                      t != null &&
+                                      dt != '' &&
+                                      dt != null) {
+                                    print(dt);
+                                    String ft = t.format(context);
+
+                                    String fdt = dt.toString();
+                                    String rdr = fdt.replaceAll(
+                                      RegExp('( 00:00:00.000)'),
+                                      '',
+                                    );
+                                    rdr = rdr.replaceAll(RegExp('2025-'), '');
+                                    rdr = rdr.replaceAll(RegExp('\-'), '\\');
+                                    rdr = rdr.split('\\').reversed.join('\\');
+                                    print(fdt);
+                                    print(rdr);
+                                    print(ft);
+
+                                    tlist.add('${rdr},${ft}');
+                                    print(tlist);
+                                    list.add(_controller.text);
+                                    _controller.clear();
+                                    sav(list, tlist);
+                                    cv();
+                                    invis = false;
+                                  }
                                 });
                               },
                             ),
@@ -292,6 +335,7 @@ class _utubeState extends State<utube> {
                     child: Column(
                       children: [
                         for (int i = 0; i < list.length; i++)
+                          // for (int j = 0; i < tlist.length; j++)
                           Center(
                             child: Container(
                               alignment: Alignment.center,
@@ -300,10 +344,11 @@ class _utubeState extends State<utube> {
                               child: Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
 
                                     children: [
                                       Container(
+                                        padding: EdgeInsets.all(4),
                                         width:
                                             MediaQuery.of(context).size.width *
                                             0.88,
@@ -332,29 +377,46 @@ class _utubeState extends State<utube> {
                                               onPressed: () {
                                                 setState(() {
                                                   list.removeAt(i);
-                                                  sav(list);
+                                                  tlist.removeAt(i);
+                                                  sav(list, tlist);
                                                   cv();
                                                 });
                                               },
                                             ),
-                                            SizedBox(width: 10),
 
-                                            Text(
-                                              '${list[i]}',
-                                              style: TextStyle(
-                                                fontFamily: 'Lexend',
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-
-                                            Text(
-                                              '${sd}',
-                                              style: TextStyle(
-                                                fontFamily: 'Lexend',
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                              ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Text(
+                                                  '${list[i]}',
+                                                  style: TextStyle(
+                                                    fontFamily: 'Lexend',
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width:
+                                                      MediaQuery.of(
+                                                        context,
+                                                      ).size.width *
+                                                      0.18,
+                                                ),
+                                                ElevatedButton.icon(
+                                                  onPressed: () {},
+                                                  label: Text(
+                                                    '${tlist[i]}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Lexend',
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ],
                                         ),
