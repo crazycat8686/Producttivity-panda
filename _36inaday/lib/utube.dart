@@ -76,8 +76,8 @@ class _utubeState extends State<utube> {
 
   del() async {
     final prefs = await SharedPreferences.getInstance();
-    // prefs.remove('Name');
-    // prefs.remove('Email');
+    prefs.remove('Name');
+    prefs.remove('Email');
     prefs.remove('l');
     prefs.remove('t');
   }
@@ -100,9 +100,15 @@ class _utubeState extends State<utube> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        'https://picsum.photos/seed/picsum/200/300',
+                    ElevatedButton(
+                      onPressed: () {},
+                      onLongPress: () {
+                        del();
+                      },
+                      child: CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          'https://picsum.photos/seed/picsum/200/300',
+                        ),
                       ),
                     ),
                   ],
@@ -221,6 +227,7 @@ class _utubeState extends State<utube> {
                         ),
                         SizedBox(height: 20),
                         Row(
+                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             ElevatedButton.icon(
                               icon: Icon(Icons.check_circle),
@@ -347,78 +354,68 @@ class _utubeState extends State<utube> {
                                     mainAxisAlignment: MainAxisAlignment.center,
 
                                     children: [
-                                      Container(
-                                        padding: EdgeInsets.all(4),
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                            0.88,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                            22,
-                                          ),
-                                          color: Colors.white,
-                                          border: Border.all(
-                                            color: const Color.fromARGB(
-                                              107,
-                                              241,
-                                              220,
-                                              244,
+                                      Flexible(
+                                        child: Container(
+                                          padding: EdgeInsets.all(4),
+                                          width:
+                                              MediaQuery.of(
+                                                context,
+                                              ).size.width *
+                                              0.88,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              22,
                                             ),
-                                            width: 1.8,
-                                          ),
-                                        ),
-                                        child: Row(
-                                          children: [
-                                            IconButton(
-                                              icon: Icon(
-                                                ti,
-                                                color: Colors.purple,
+                                            color: Colors.white,
+                                            border: Border.all(
+                                              color: const Color.fromARGB(
+                                                107,
+                                                241,
+                                                220,
+                                                244,
                                               ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  list.removeAt(i);
-                                                  tlist.removeAt(i);
-                                                  sav(list, tlist);
-                                                  cv();
-                                                });
-                                              },
+                                              width: 1.8,
                                             ),
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                icon: Icon(
+                                                  ti,
+                                                  color: Colors.purple,
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    list.removeAt(i);
+                                                    tlist.removeAt(i);
+                                                    sav(list, tlist);
+                                                    cv();
+                                                  });
+                                                },
+                                              ),
 
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Text(
-                                                  '${list[i]}',
+                                              Text(
+                                                '${list[i]}',
+                                                style: TextStyle(
+                                                  fontFamily: 'Lexend',
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Spacer(),
+                                              ElevatedButton.icon(
+                                                onPressed: () {},
+                                                label: Text(
+                                                  '${tlist[i]}',
                                                   style: TextStyle(
                                                     fontFamily: 'Lexend',
-                                                    fontSize: 16,
+                                                    fontSize: 11,
                                                     fontWeight: FontWeight.w500,
                                                   ),
                                                 ),
-                                                SizedBox(
-                                                  width:
-                                                      MediaQuery.of(
-                                                        context,
-                                                      ).size.width *
-                                                      0.18,
-                                                ),
-                                                ElevatedButton.icon(
-                                                  onPressed: () {},
-                                                  label: Text(
-                                                    '${tlist[i]}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Lexend',
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
