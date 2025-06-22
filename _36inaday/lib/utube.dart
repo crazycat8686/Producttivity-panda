@@ -58,7 +58,9 @@ class _utubeState extends State<utube> {
   bool viser = false;
   bool lvis = true;
   bool cvis = true;
+  bool schedulevis = false;
   var ti = Icons.circle_outlined;
+  TimeOfDay? sd = TimeOfDay.now();
 
   void nav2() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => wall()));
@@ -78,214 +80,319 @@ class _utubeState extends State<utube> {
         backgroundColor: Colors.white,
 
         body: Padding(
-          padding: EdgeInsets.fromLTRB(30, 20, 30, 0),
+          padding: EdgeInsets.fromLTRB(10, 20, 10, 0),
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      'https://picsum.photos/seed/picsum/200/300',
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
-              // Text(
-              //   textAlign: TextAlign.center,
-              //   'Welcome back ${widget.name} \n let\'s plan your day',
-              //   style: TextStyle(
-              //     fontFamily: 'Lexend',
-              //     fontSize: 22,
-              //     fontWeight: FontWeight.bold,
-              //   ),
-              // ),
-              AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'Hello ${widget.name}',
-                    speed: Duration(milliseconds: 200),
-                    textStyle: TextStyle(
-                      fontSize: 34,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Lexend',
-                      color: Colors.deepPurple,
-                    ),
-                  ),
-                  ColorizeAnimatedText(
-                    'To-dos  ',
-                    colors: [
-                      Colors.black,
-                      Colors.deepPurple,
-                      Colors.deepOrange,
-                      Colors.redAccent,
-                    ],
-                    textStyle: TextStyle(
-                      // color: Colors.black,
-                      fontSize: 29,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: 'Lexend',
-                    ),
-                  ),
-                ],
-                totalRepeatCount: 1,
-                pause: Duration(milliseconds: 500),
-              ),
-              // ass.map((cheeks) {
-              //   return Text(
-              //     cheeks,
-              //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
-              //   );
-              // }).toList(),
-              Visibility(
-                visible: invis,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SizedBox(height: MediaQuery.of(context).size.height * 0.1),
-                    Flexible(
-                      flex: 2,
-                      child: TextField(
-                        onSubmitted: (value) {
-                          setState(() {
-                            viser = false;
-
-                            if (list.contains(_controller.text)) {
-                              viser = true;
-                              err = 'ufcked upp bro thats already there..';
-                            } else {
-                              list.add(_controller.text);
-                              _controller.clear();
-                              sav(list);
-                              cv();
-                            }
-                          });
-                        },
-                        controller: _controller,
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          labelText: 'Add a new task',
-                        ),
-                      ),
-                    ),
-                    FittedBox(
-                      child: ElevatedButton(
-                        child: Icon(Icons.menu),
-                        onPressed: () {
-                          setState(() {
-                            viser = false;
-
-                            if (list.contains(_controller.text)) {
-                              viser = true;
-                              err = 'ufcked upp bro thats already there..';
-                            } else if (_controller.text.trim() == '') {
-                              viser = true;
-                              err =
-                                  'Emi ra baala raaju??...\n waste ra reyy, \n yakk thu ';
-                            }
-                            if (list.contains(_controller.text)) {
-                              viser = true;
-                              err = 'ufcked upp bro thats already there..';
-                            } else {
-                              list.add(_controller.text);
-                              _controller.clear();
-                              sav(list);
-                              cv();
-                            }
-                          });
-                        },
+                    CircleAvatar(
+                      backgroundImage: NetworkImage(
+                        'https://picsum.photos/seed/picsum/200/300',
                       ),
                     ),
                   ],
                 ),
-              ),
-              SizedBox(height: 20),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+                // Text(
+                //   textAlign: TextAlign.center,
+                //   'Welcome back ${widget.name} \n let\'s plan your day',
+                //   style: TextStyle(
+                //     fontFamily: 'Lexend',
+                //     fontSize: 22,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
+                AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Hello ${widget.name}',
+                      speed: Duration(milliseconds: 200),
+                      textStyle: TextStyle(
+                        fontSize: 34,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Lexend',
+                        color: Colors.deepPurple,
+                      ),
+                    ),
+                    ColorizeAnimatedText(
+                      'To-dos  ',
+                      colors: [
+                        Colors.black,
+                        Colors.deepPurple,
+                        Colors.deepOrange,
+                        Colors.redAccent,
+                      ],
+                      textStyle: TextStyle(
+                        // color: Colors.black,
+                        fontSize: 29,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'Lexend',
+                      ),
+                    ),
+                  ],
+                  totalRepeatCount: 1,
+                  pause: Duration(milliseconds: 500),
+                ),
+                // ass.map((cheeks) {
+                //   return Text(
+                //     cheeks,
+                //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 33),
+                //   );
+                // }).toList(),
+                Visibility(
+                  visible: invis,
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    margin: EdgeInsets.fromLTRB(0, 3, 0, 0),
+                    decoration: BoxDecoration(
+                      // color: const Color.fromARGB(43, 249, 232, 252),
+                      borderRadius: BorderRadius.circular(40),
+                      border: Border.all(
+                        width: 1,
+                        color: const Color.fromARGB(74, 247, 232, 250),
+                      ),
+                    ),
+                    child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          // height: MediaQuery.of(context).size.height * 0.1,
+                          height: 30,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            color: Colors.white,
+                          ),
+                          child: TextField(
+                            onSubmitted: (value) {
+                              setState(() {
+                                viser = false;
 
-              Visibility(
-                visible: viser,
-                child: Text(err, style: TextStyle(color: c3)),
-              ),
+                                if (list.contains(_controller.text)) {
+                                  viser = true;
+                                  err = 'ufcked upp bro thats already there..';
+                                } else {
+                                  list.add(_controller.text);
+                                  _controller.clear();
+                                  sav(list);
+                                  cv();
+                                }
+                              });
+                            },
+                            controller: _controller,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.white,
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                // borderSide: BorderSide(color: Colors.white),
+                                borderSide: BorderSide(
+                                  color: Colors.purple.shade50,
+                                  width: 2,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(
+                                  color: Colors.purple.shade50,
+                                  width: 2,
+                                ),
+                              ),
+                              labelText: 'Add a new task',
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            ElevatedButton.icon(
+                              icon: Icon(Icons.check_circle),
+                              label: Text('save'),
 
-              Visibility(
-                visible: cvis,
-                child: Container(
-                  margin: EdgeInsets.only(top: 6, bottom: 10),
-                  padding: EdgeInsets.all(13),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: Colors.white,
-                    border: Border.all(
-                      color: const Color.fromARGB(107, 243, 229, 245),
-                      width: 1,
+                              onPressed: () {
+                                setState(() {
+                                  viser = false;
+
+                                  if (list.contains(_controller.text)) {
+                                    viser = true;
+                                    err =
+                                        'ufcked upp bro thats already there..';
+                                  } else if (_controller.text.trim() == '') {
+                                    viser = true;
+                                    err =
+                                        'Emi ra baala raaju??...\n waste ra reyy, \n yakk thu ';
+                                  } else {
+                                    list.add(_controller.text);
+                                    _controller.clear();
+                                    sav(list);
+                                    cv();
+                                    invis = false;
+                                  }
+                                });
+                              },
+                            ),
+                            SizedBox(width: 10),
+
+                            ElevatedButton.icon(
+                              label: Text('schedule'),
+                              icon: Icon(Icons.access_time),
+                              onPressed: () async {
+                                final TimeOfDay? t = await showTimePicker(
+                                  initialTime: TimeOfDay.now(),
+                                  context: context,
+                                );
+                                setState(() {
+                                  if (t != '') {
+                                    sd = t;
+                                    TimeOfDay sd{i+1}= sd;             }
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        // Visibility(
+                        //   visible: schedulevis,
+                        //   child:
+                        // ),
+                      ],
                     ),
                   ),
-                  child: Column(
-                    children: [
-                      for (int i = 0; i < list.length; i++)
-                        Container(
-                          margin: EdgeInsets.only(bottom: 3),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                ),
+                SizedBox(height: 20),
 
+                Visibility(
+                  visible: viser,
+                  child: Text(err, style: TextStyle(color: c3)),
+                ),
+
+                Visibility(
+                  visible: cvis,
+                  child: Container(
+                    margin: EdgeInsets.only(
+                      top: 6,
+                      bottom: 10,
+                      left: 6,
+                      right: 6,
+                    ),
+                    padding: EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: Colors.white,
+                      // border: Border.all(
+                      //   color: const Color.fromARGB(107, 243, 229, 245),
+                      //   width: 1.4,
+                      // ),
+                    ),
+                    child: Column(
+                      children: [
+                        for (int i = 0; i < list.length; i++)
+                          Center(
+                            child: Container(
+                              alignment: Alignment.center,
+
+                              margin: EdgeInsets.only(bottom: 3),
+                              child: Column(
                                 children: [
-                                  Text(
-                                    '${i + 1} . ${list[i]}',
-                                    style: TextStyle(
-                                      fontFamily: 'Lexend',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+
+                                    children: [
+                                      Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                            0.88,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            22,
+                                          ),
+                                          color: Colors.white,
+                                          border: Border.all(
+                                            color: const Color.fromARGB(
+                                              107,
+                                              241,
+                                              220,
+                                              244,
+                                            ),
+                                            width: 1.8,
+                                          ),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                              icon: Icon(
+                                                ti,
+                                                color: Colors.purple,
+                                              ),
+                                              onPressed: () {
+                                                setState(() {
+                                                  list.removeAt(i);
+                                                  sav(list);
+                                                  cv();
+                                                });
+                                              },
+                                            ),
+                                            SizedBox(width: 10),
+
+                                            Text(
+                                              '${list[i]}',
+                                              style: TextStyle(
+                                                fontFamily: 'Lexend',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+
+                                            Text(
+                                              '${sd}',
+                                              style: TextStyle(
+                                                fontFamily: 'Lexend',
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    icon: Icon(ti, color: Colors.purple),
-                                    onPressed: () {
-                                      setState(() {
-                                        list.removeAt(i);
-                                        sav(list);
-                                        cv();
-                                      });
-                                    },
-                                  ),
+                                  SizedBox(height: 5),
                                 ],
                               ),
-                            ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 30),
+                Visibility(
+                  visible: !cvis,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: ClipRRect(
+                          child: Image(
+                            image: AssetImage('images/notasks.webp'),
                           ),
                         ),
+                      ),
+                      Text(
+                        textAlign: TextAlign.center,
+                        'No tasks for now, \nclicl "+" to add a new task',
+                        style: TextStyle(fontFamily: 'Lexend', fontSize: 16),
+                      ),
                     ],
                   ),
                 ),
-              ),
-              SizedBox(height: 30),
-              Visibility(
-                visible: !cvis,
-                child: Column(
-                  children: [
-                    Center(
-                      child: ClipRRect(
-                        child: Image(image: AssetImage('images/image.png')),
-                      ),
-                    ),
-                    Text(
-                      textAlign: TextAlign.center,
-                      'No tasks for now, \nclicl "+" to add a new task',
-                      style: TextStyle(fontFamily: 'Lexend', fontSize: 16),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-            //ass,map((cheeks)=> Text(cheeks).toList()),
+              ],
+              //ass,map((cheeks)=> Text(cheeks).toList()),
+            ),
           ),
         ),
 

@@ -95,7 +95,7 @@ class _LanderState extends State<Lander> {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('images/images.jpg'),
+                image: AssetImage('images/awe.webp'),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.4),
