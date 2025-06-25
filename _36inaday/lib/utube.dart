@@ -1,8 +1,6 @@
-import 'package:_36inaday/wall.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:_36inaday/notes.dart';
 
 class utube extends StatefulWidget {
   final String email;
@@ -65,10 +63,6 @@ class _utubeState extends State<utube> {
   // List<TimeOfDay?> sd = [];
   List<String> tlist = [];
   var count;
-
-  void nav2() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => wall()));
-  }
 
   del() async {
     final prefs = await SharedPreferences.getInstance();
