@@ -52,6 +52,8 @@ class _utubeState extends State<utube> {
   }
 
   final TextEditingController _controller = TextEditingController();
+  final TextEditingController mapt = TextEditingController();
+  final TextEditingController mapn = TextEditingController();
   List<String> list = [];
   var err = '';
   bool invis = false;
@@ -59,6 +61,8 @@ class _utubeState extends State<utube> {
   bool lvis = true;
   bool cvis = true;
   bool schedulevis = false;
+  bool namenote = true;
+  bool textfieldvis = true;
   var ti = Icons.circle_outlined;
   // List<TimeOfDay?> sd = [];
   List<String> tlist = [];
@@ -475,8 +479,114 @@ class _utubeState extends State<utube> {
                   visible: !detertodo,
                   child: Padding(
                     padding: EdgeInsetsGeometry.all(4),
-                    child: Column(children: [
+                    child: Column(
+                      children: [
+                        SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AnimatedTextKit(
+                                animatedTexts: [
+                                  ColorizeAnimatedText(
+                                    'Notes',
+                                    colors: [
+                                      Colors.black,
+                                      Colors.deepPurple,
+                                      Colors.deepOrange,
+                                      Colors.redAccent,
+                                    ],
+                                    textStyle: TextStyle(
+                                      // color: Colors.black,
+                                      fontSize: 29,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Lexend',
+                                    ),
+                                  ),
+                                ],
+                                totalRepeatCount: 1,
+                                pause: Duration(milliseconds: 500),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(width: 1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: EdgeInsets.all(10),
+                                child: Visibility(
+                                  visible: textfieldvis,
+                                  child: Column(
+                                    children: [
+                                      Visibility(
+                                        visible: namenote,
+                                        child: FractionallySizedBox(
+                                          widthFactor: 0.9,
+                                          child: TextField(
+                                            controller: mapn,
+                                            decoration: InputDecoration(
+                                              hintText: 'Name',
 
+                                              hintStyle: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            onSubmitted: (value) {
+                                              setState(() {
+                                                Map<String, String> temp = {
+                                                  mapn.text: mapt.text,
+                                                };
+
+                                                namenote = false;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: !namenote,
+                                        child: FractionallySizedBox(
+                                          widthFactor: 0.75,
+                                          child: TextField(
+                                            controller: mapt,
+                                            decoration: InputDecoration(
+                                              hintText: 'Content',
+                                            ),
+
+                                            onSubmitted: (value) {
+                                              setState(() {
+                                                Map<String, String> temp = {
+                                                  mapn.text: mapt.text,
+                                                };
+
+                                                namenote = true;
+                                                textfieldvis = false;
+                                                print(temp);
+                                                lil.add(temp);
+                                                temp.clear();
+                                                mapn.clear();
+                                                mapt.clear();
+                                                print(lil);
+                                                print(lil.length);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              // for (int i = 0; i < lil.length; i++)
+                              //   Column(
+                              //     children: [
+                              //       Text('${lil[i].keys.first}'),
+                              //       Text('${lil[i].values.first}'),
+                              //     ],
+                              //   ),
+                            ],
+                            //ass,map((cheeks)=> Text(cheeks).toList()),
+                          ),
+                        ),
                       ],
                     ),
                   ),
